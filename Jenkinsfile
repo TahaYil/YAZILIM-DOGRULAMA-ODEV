@@ -10,12 +10,6 @@ pipeline {
             }
         }
         stage('Unit & Integration Tests') {
-            agent {
-                docker {
-                    image 'maven:3.9-amazoncorretto-21'
-                    args '-v $HOME/.m2:/root/.m2'
-                }
-            }
             steps {
                 dir('backend') {
                     sh 'mvn clean verify'
@@ -39,12 +33,6 @@ pipeline {
             }
         }
         stage('Selenium Tests') {
-            agent {
-                docker {
-                    image 'maven:3.9-amazoncorretto-21'
-                    args '-v $HOME/.m2:/root/.m2'
-                }
-            }
             steps {
                 dir('backend') {
                     sh 'mvn test -Dtest=*SeleniumTest'
