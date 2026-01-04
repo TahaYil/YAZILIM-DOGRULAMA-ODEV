@@ -1,10 +1,7 @@
 pipeline {
     agent any
 
-    environment {
-        // JAVA_HOME otomatik olarak mevcut dizinlerden birine ayarlanacak
-        JAVA_HOME = ''
-    }
+
 
     stages {
         stage('Checkout') {
@@ -13,25 +10,15 @@ pipeline {
             }
         }
         stage('Unit & Integration Tests') {
-            steps {
-                script {
-                    def javaHomes = [
-                        '/usr/lib/jvm/java-21-openjdk-amd64',
-                        '/usr/lib/jvm/java-17-openjdk-amd64',
-                        '/usr/lib/jvm/java-11-openjdk-amd64',
-                        '/usr/lib/jvm/default-java',
-                        '/usr/java/latest'
-                    ]
-                    for (jhome in javaHomes) {
-                        if (fileExists(jhome)) {
-                            env.JAVA_HOME = jhome
-                            env.PATH = "${jhome}/bin:" + env.PATH
-                            break
-                        }
-                    }
+            agent {
+                docker {
+                    image 'maven:3.9-amazoncorretto-21'
+                    args '-v $HOME/.m2:/root/.m2'
                 }
+            }
+            steps {
                 dir('backend') {
-                    sh 'echo Using JAVA_HOME=$JAVA_HOME && java -version && mvn clean verify'
+                    sh 'mvn clean verify'
                 }
             }
             post {
@@ -52,9 +39,15 @@ pipeline {
             }
         }
         stage('Selenium Tests') {
+            agent {
+                docker {
+                    image 'maven:3.9-amazoncorretto-21'
+                    args '-v $HOME/.m2:/root/.m2'
+                }
+            }
             steps {
                 dir('backend') {
-                    sh 'echo Using JAVA_HOME=$JAVA_HOME && java -version && mvn test -Dtest=*SeleniumTest'
+                    sh 'mvn test -Dtest=*SeleniumTest'
                 }
             }
             post {
