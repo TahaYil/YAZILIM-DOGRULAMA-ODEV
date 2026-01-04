@@ -18,6 +18,9 @@ Thumbs.db
 .env
 .env.*
 
+# Spring config dosyası (secret içermemesi için)
+/backend/src/main/resources/application.properties
+
 # Maven wrapper binaries
 /backend/mvnw.cmd
 /backend/mvnw
@@ -28,6 +31,8 @@ Thumbs.db
 # Test reports
 /backend/hs_err_pid*.log
 /backend/surefire-reports/
+/backend/src/main/resources/application.properties
+
 
 # Docker bind mountlarındaki temp dosyalar (varsa)
 *.pid
