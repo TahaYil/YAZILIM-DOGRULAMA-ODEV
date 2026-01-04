@@ -1,0 +1,36 @@
+# Backend build outputs
+/backend/target/
+
+# Frontend dependencies and build outputs
+/frontend/node_modules/
+/frontend/dist/
+
+# IDE/editor configs
+/.idea/
+/.vscode/
+
+# OS/temporary files
+.DS_Store
+Thumbs.db
+*.log
+
+# Environment/config files (gerekirse elle ekle)
+.env
+.env.*
+
+# Maven wrapper binaries
+/backend/mvnw.cmd
+/backend/mvnw
+
+# Nginx cache (varsa)
+/frontend/nginx/cache/
+
+# Test reports
+/backend/hs_err_pid*.log
+/backend/surefire-reports/
+
+# Docker bind mountlarındaki temp dosyalar (varsa)
+*.pid
+
+# Jenkins build outputs (Jenkinsfile hariç, Jenkinsfile git'e ekli kalmalı)
+# (Jenkins workspace dizini genelde repo dışında olur, eklemeye gerek yok)

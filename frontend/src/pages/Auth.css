@@ -1,0 +1,176 @@
+.no-scroll {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .auth-container {
+    height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      background-color: black;
+      color: white;
+    }
+    
+    .auth-card {
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .auth-card h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+      letter-spacing: 5px;
+    }
+    
+    .auth-card h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #333;
+      background-color: #222;
+      color: white;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    .auth-button {
+      width: 100%;
+      padding: 14px;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 10px;
+    }
+    
+    .auth-button:hover {
+      background-color: #ddd;
+    }
+    
+    .auth-button:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+    
+    .error-message {
+      color: #ff6b6b;
+      margin-bottom: 20px;
+      text-align: center;
+      padding: 10px;
+      background-color: rgba(255, 107, 107, 0.1);
+      border-radius: 4px;
+    }
+    
+    .auth-redirect {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    
+    .auth-redirect a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    
+    .auth-redirect a:hover {
+      color: #ddd;
+    }
+    
+    @media (max-width: 576px) {
+      .auth-card {
+        padding: 30px 20px;
+      }
+    }
+  
+  .modern-radio-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 8px;
+    width: 100%;
+  }
+  
+  .modern-radio-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #e1e1e1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #1a1a1a;
+  }
+  
+  .modern-radio-option:hover {
+    background-color: #000000;
+    border-color: #d0d0d0;
+  }
+  
+  .modern-radio-option.selected {
+    background-color: #25282b;
+    border-color: #3498db;
+  }
+  
+  .modern-radio-icon {
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .gender-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .gender-icon.male {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath fill='%233498db' d='M372 64h-79c-10.7 0-16 12.9-8.5 20.5l16.9 16.9-80.7 80.7c-22.2-14-48.5-22.1-76.7-22.1C64.5 160 0 224.5 0 304s64.5 144 144 144 144-64.5 144-144c0-28.2-8.1-54.5-22.1-76.7l80.7-80.7 16.9 16.9c7.6 7.6 20.5 2.2 20.5-8.5V76c0-6.6-5.4-12-12-12zM144 384c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z'/%3E%3C/svg%3E");
+  }
+  
+  .gender-icon.female {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath fill='%23e84393' d='M368 176c0-97.2-78.8-176-176-176S16 78.8 16 176c0 94.5 74.9 171.5 168 175.8V404H132c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h52v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-40h52c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-52v-52.2c93.1-4.3 168-81.3 168-175.8zm-320 0c0-79.5 64.5-144 144-144s144 64.5 144 144-64.5 144-144 144-144-64.5-144-144z'/%3E%3C/svg%3E");
+  }
+  
+  .modern-radio-text {
+    font-weight: 500;
+  }

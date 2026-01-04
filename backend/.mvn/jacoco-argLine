@@ -1,0 +1,2 @@
+-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${project.build.directory}/jacoco.exec,append=true,includes=com.taa.tshirtsatis.*
+
