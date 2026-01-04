@@ -21,6 +21,9 @@ Thumbs.db
 # Spring config dosyası (secret içermemesi için)
 /backend/src/main/resources/application.properties
 
+# BFG ve secret temizliği için kullanılan dosya
+secrets.txt
+
 # Maven wrapper binaries
 /backend/mvnw.cmd
 /backend/mvnw
