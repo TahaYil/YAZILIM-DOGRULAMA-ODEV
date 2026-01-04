@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home'
+        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk-amd64'
         PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
 
@@ -20,7 +20,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'backend/target/surefire-reports/*.xml'
+                    junit '**/target/surefire-reports/*.xml'
                 }
             }
         }
@@ -43,7 +43,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'backend/target/surefire-reports/*.xml'
+                    junit '**/target/surefire-reports/*.xml'
                 }
             }
         }
