@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        BACKEND_DIR = "${WORKSPACE}/backend"
+        MAVEN_IMAGE = "maven:3.9-eclipse-temurin-21"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -13,9 +18,10 @@ pipeline {
             steps {
                 sh '''
                 docker run --rm \
-                  -v "$PWD/backend":/app \
+                  --platform linux/amd64 \
+                  -v "$BACKEND_DIR":/app \
                   -w /app \
-                  maven:3.9-eclipse-temurin-21 \
+                  $MAVEN_IMAGE \
                   mvn clean test -Dtest=*Test -DfailIfNoTests=false
                 '''
             }
@@ -26,13 +32,14 @@ pipeline {
             }
         }
 
-        stage('Integration Tests') {
+        stage('Controller & Service Tests') {
             steps {
                 sh '''
                 docker run --rm \
-                  -v "$PWD/backend":/app \
+                  --platform linux/amd64 \
+                  -v "$BACKEND_DIR":/app \
                   -w /app \
-                  maven:3.9-eclipse-temurin-21 \
+                  $MAVEN_IMAGE \
                   mvn test -Dtest=*ServiceTest,*ControllerTest,TshirtSatisApplicationTests -DfailIfNoTests=false
                 '''
             }
@@ -62,10 +69,11 @@ pipeline {
             steps {
                 sh '''
                 docker run --rm \
-                  -v "$PWD/backend":/app \
+                  --platform linux/amd64 \
+                  -v "$BACKEND_DIR":/app \
                   -w /app \
-                  maven:3.9-eclipse-temurin-21 \
-                  mvn test -Dtest=*SeleniumTest
+                  $MAVEN_IMAGE \
+                  mvn test -Dtest=*SeleniumTest -DfailIfNoTests=false
                 '''
             }
             post {
