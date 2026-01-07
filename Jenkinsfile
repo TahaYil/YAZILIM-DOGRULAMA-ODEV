@@ -9,14 +9,31 @@ pipeline {
             }
         }
 
-        stage('Unit & Integration Tests') {
+        stage('Unit Tests') {
             steps {
                 sh '''
                 docker run --rm \
                   -v "$PWD/backend":/app \
                   -w /app \
                   maven:3.9-eclipse-temurin-21 \
-                  mvn clean verify
+                  mvn clean test -Dtest=*Test -DfailIfNoTests=false
+                '''
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Integration Tests') {
+            steps {
+                sh '''
+                docker run --rm \
+                  -v "$PWD/backend":/app \
+                  -w /app \
+                  maven:3.9-eclipse-temurin-21 \
+                  mvn test -Dtest=*ServiceTest,*ControllerTest,TshirtSatisApplicationTests -DfailIfNoTests=false
                 '''
             }
             post {
