@@ -68,12 +68,21 @@ public abstract class BaseSeleniumTest {
             }
 
             int code = con.getResponseCode();
-            // 200, 201, 409 (zaten varsa) kabul edilir
             if (code != 200 && code != 201 && code != 409) {
-                System.err.println("Admin kullanıcı eklenemedi! HTTP code: " + code);
+                StringBuilder response = new StringBuilder();
+                try (var is = con.getErrorStream() != null ? con.getErrorStream() : con.getInputStream()) {
+                    if (is != null) {
+                        int c;
+                        while ((c = is.read()) != -1) {
+                            response.append((char) c);
+                        }
+                    }
+                }
+                System.err.println("Admin kullanıcı eklenemedi! HTTP code: " + code + ", response: " + response);
             }
         } catch (Exception e) {
             System.err.println("Admin kullanıcı eklenirken hata: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

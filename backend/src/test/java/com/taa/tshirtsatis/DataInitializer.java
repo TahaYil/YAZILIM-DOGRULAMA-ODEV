@@ -18,15 +18,22 @@ public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void run(String... args) throws Exception {
-        // Admin kullanıcısı ekle
-        if (usersRepository.findByEmail("admin@admin.com").isEmpty()) {
-            Users adminUser = Users.builder()
-                    .email("admin@admin.com")
-                    .password(passwordEncoder.encode("admin"))
-                    .role(Role.ADMIN)
-                    .build();
-            usersRepository.save(adminUser);
+    public void run(String... args) {
+        try {
+            if (usersRepository.findByEmail("admin@admin.com").isEmpty()) {
+                Users adminUser = Users.builder()
+                        .email("admin@admin.com")
+                        .password(passwordEncoder.encode("admin"))
+                        .role(Role.ADMIN)
+                        .build();
+                usersRepository.save(adminUser);
+                System.out.println("[DataInitializer] Admin user created: admin@admin.com / admin");
+            } else {
+                System.out.println("[DataInitializer] Admin user already exists: admin@admin.com");
+            }
+        } catch (Exception e) {
+            System.err.println("[DataInitializer] Admin user could not be created! Exception: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

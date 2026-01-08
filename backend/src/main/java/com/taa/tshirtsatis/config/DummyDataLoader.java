@@ -14,15 +14,22 @@ public class DummyDataLoader {
     @Bean
     public CommandLineRunner loadDummyUser(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            String email = "admin@example.com";
-            if (!usersRepository.existsByEmail(email)) {
-                Users user = new Users();
-                user.setEmail(email);
-                user.setPassword(passwordEncoder.encode("admin123"));
-                user.setRole(Role.ADMIN);
-                user.setGender(Gender.MALE);
-                usersRepository.save(user);
-                System.out.println("Dummy admin user created: " + email + " / admin123");
+            String email = "admin@admin.com";
+            try {
+                if (!usersRepository.existsByEmail(email)) {
+                    Users user = new Users();
+                    user.setEmail(email);
+                    user.setPassword(passwordEncoder.encode("admin"));
+                    user.setRole(Role.ADMIN);
+                    user.setGender(Gender.MALE);
+                    usersRepository.save(user);
+                    System.out.println("Dummy admin user created: " + email + " / admin");
+                } else {
+                    System.out.println("Dummy admin user already exists: " + email);
+                }
+            } catch (Exception e) {
+                System.err.println("Dummy admin user could not be created! Exception: " + e.getMessage());
+                e.printStackTrace();
             }
         };
     }
