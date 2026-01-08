@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Profile({ "docker", "dev" }) // PROD’da istemiyorsan önemli
 public class DataInitializer implements CommandLineRunner {
 
     private final UsersRepository usersRepository;
