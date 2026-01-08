@@ -8,12 +8,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.taa.tshirtsatis.entity.Users;
+import com.taa.tshirtsatis.enums.Gender;
+import com.taa.tshirtsatis.enums.Role;
+
 import java.time.Duration;
 import java.util.List;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import com.taa.tshirtsatis.repository.UsersRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public abstract class BaseSeleniumTest {
 
@@ -22,9 +28,12 @@ public abstract class BaseSeleniumTest {
     protected static final String FRONTEND_URL = "http://localhost:3001";
     protected static final String LOGIN_EMAIL = "admin@admin.com";
     protected static final String LOGIN_PASSWORD = "admin";
+    protected UsersRepository usersRepository;
+    protected PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setUp() {
+        ensureAdminUserExists();
 
         WebDriverManager.chromedriver().setup();
 
@@ -48,39 +57,22 @@ public abstract class BaseSeleniumTest {
      * Test başlamadan önce admin kullanıcısı yoksa ekler.
      */
     protected void ensureAdminUserExists() {
+
         try {
-            URL url = new URL("http://localhost:8080/api/auth/signup");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setDoOutput(true);
-
-            String jsonInputString = "{" +
-                    "\"email\": \"admin@admin.com\"," +
-                    "\"password\": \"admin\"," +
-                    "\"gender\": \"MALE\"," +
-                    "\"role\": \"ADMIN\"}";
-
-            try (OutputStream os = con.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes("utf-8");
-                os.write(input, 0, input.length);
-            }
-
-            int code = con.getResponseCode();
-            if (code != 200 && code != 201 && code != 409) {
-                StringBuilder response = new StringBuilder();
-                try (var is = con.getErrorStream() != null ? con.getErrorStream() : con.getInputStream()) {
-                    if (is != null) {
-                        int c;
-                        while ((c = is.read()) != -1) {
-                            response.append((char) c);
-                        }
-                    }
-                }
-                System.err.println("Admin kullanıcı eklenemedi! HTTP code: " + code + ", response: " + response);
+            if (usersRepository.findByEmail("admin@admin.com").isEmpty()) {
+                Users adminUser = Users.builder()
+                        .email("admin@admin.com")
+                        .password(passwordEncoder.encode("admin"))
+                        .role(Role.ADMIN)
+                        .gender(Gender.MALE)
+                        .build();
+                usersRepository.save(adminUser);
+                System.out.println("[DataInitializer] Admin user created: admin@admin.com / admin");
+            } else {
+                System.out.println("[DataInitializer] Admin user already exists: admin@admin.com");
             }
         } catch (Exception e) {
-            System.err.println("Admin kullanıcı eklenirken hata: " + e.getMessage());
+            System.err.println("[DataInitializer] Admin user could not be created! Exception: " + e.getMessage());
             e.printStackTrace();
         }
     }
