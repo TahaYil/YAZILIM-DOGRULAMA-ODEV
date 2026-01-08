@@ -26,7 +26,6 @@ public abstract class BaseSeleniumTest {
     @BeforeEach
     public void setUp() {
 
-        ensureAdminUserExists();
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();

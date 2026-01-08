@@ -1,15 +1,19 @@
 package com.taa.tshirtsatis;
 
 import com.taa.tshirtsatis.entity.Users;
+import com.taa.tshirtsatis.enums.Gender;
 import com.taa.tshirtsatis.enums.Role;
 import com.taa.tshirtsatis.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 @Profile({ "docker", "dev" }) // PROD’da istemiyorsan önemli
 public class DataInitializer implements CommandLineRunner {
@@ -25,6 +29,7 @@ public class DataInitializer implements CommandLineRunner {
                         .email("admin@admin.com")
                         .password(passwordEncoder.encode("admin"))
                         .role(Role.ADMIN)
+                        .gender(Gender.MALE)
                         .build();
                 usersRepository.save(adminUser);
                 System.out.println("[DataInitializer] Admin user created: admin@admin.com / admin");
