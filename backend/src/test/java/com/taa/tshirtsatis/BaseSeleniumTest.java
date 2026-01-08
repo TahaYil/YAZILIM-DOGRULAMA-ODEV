@@ -11,6 +11,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public abstract class BaseSeleniumTest {
 
     protected WebDriver driver;
@@ -21,6 +25,7 @@ public abstract class BaseSeleniumTest {
 
     @BeforeEach
     public void setUp() {
+        ensureAdminUserExists();
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
@@ -36,6 +41,38 @@ public abstract class BaseSeleniumTest {
     public void tearDown() {
         if (driver != null) {
             driver.quit();
+        }
+    }
+
+    /**
+     * Test başlamadan önce admin kullanıcısı yoksa ekler.
+     */
+    protected void ensureAdminUserExists() {
+        try {
+            URL url = new URL("http://localhost:8080/api/auth/signup");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+
+            String jsonInputString = "{" +
+                    "\"email\": \"admin@admin.com\"," +
+                    "\"password\": \"admin\"," +
+                    "\"gender\": \"MALE\"," +
+                    "\"role\": \"ADMIN\"}";
+
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            int code = con.getResponseCode();
+            // 200, 201, 409 (zaten varsa) kabul edilir
+            if (code != 200 && code != 201 && code != 409) {
+                System.err.println("Admin kullanıcı eklenemedi! HTTP code: " + code);
+            }
+        } catch (Exception e) {
+            System.err.println("Admin kullanıcı eklenirken hata: " + e.getMessage());
         }
     }
 
