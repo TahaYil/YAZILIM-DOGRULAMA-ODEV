@@ -18,10 +18,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(
-        UsersRepository userRepository,
-        AuthenticationManager authenticationManager,
-        PasswordEncoder passwordEncoder
-    ) {
+            UsersRepository userRepository,
+            AuthenticationManager authenticationManager,
+            PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -30,24 +29,24 @@ public class AuthenticationService {
     public Users signup(RegisterUserDto input) {
         Users user = new Users();
         user.setGender(input.getGender());
-        //kayıt yapan herkes user olur.
-        user.setRole(Role.USER);
+        // Eğer rol null ise USER, değilse gelen rolü kullan
+        if (input.getRole() == null) {
+            user.setRole(Role.USER);
+        } else {
+            user.setRole(input.getRole());
+        }
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
-
         return userRepository.save(user);
     }
 
     public Users authenticate(LoginUserDto input) {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                input.getEmail(),
-                input.getPassword()
-            )
-        );
+                new UsernamePasswordAuthenticationToken(
+                        input.getEmail(),
+                        input.getPassword()));
 
         return userRepository.findByEmail(input.getEmail())
-            .orElseThrow();
+                .orElseThrow();
     }
 }
-
