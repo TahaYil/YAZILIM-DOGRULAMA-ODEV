@@ -16,8 +16,8 @@ public abstract class BaseSeleniumTest {
     protected WebDriver driver;
     protected WebDriverWait wait;
     protected static final String FRONTEND_URL = "http://localhost:3001";
-    protected static final String LOGIN_EMAIL = "a@gmail.com";
-    protected static final String LOGIN_PASSWORD = "123";
+    protected static final String LOGIN_EMAIL = "admin@admin.com";
+    protected static final String LOGIN_PASSWORD = "admin";
 
     @BeforeEach
     public void setUp() {
