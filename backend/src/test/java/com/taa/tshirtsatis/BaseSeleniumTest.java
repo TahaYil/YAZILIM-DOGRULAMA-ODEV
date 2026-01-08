@@ -3,6 +3,7 @@ package com.taa.tshirtsatis;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -19,8 +20,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.taa.tshirtsatis.repository.UsersRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class BaseSeleniumTest {
 
     protected WebDriver driver;
@@ -28,11 +34,14 @@ public abstract class BaseSeleniumTest {
     protected static final String FRONTEND_URL = "http://localhost:3001";
     protected static final String LOGIN_EMAIL = "admin@admin.com";
     protected static final String LOGIN_PASSWORD = "admin";
+    @Autowired
     protected UsersRepository usersRepository;
+    @Autowired
     protected PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setUp() {
+
         ensureAdminUserExists();
 
         WebDriverManager.chromedriver().setup();
@@ -59,6 +68,7 @@ public abstract class BaseSeleniumTest {
     protected void ensureAdminUserExists() {
 
         try {
+
             if (usersRepository.findByEmail("admin@admin.com").isEmpty()) {
                 Users adminUser = Users.builder()
                         .email("admin@admin.com")
