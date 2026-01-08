@@ -25,6 +25,7 @@ public abstract class BaseSeleniumTest {
 
     @BeforeEach
     public void setUp() {
+        waitForBackend();
         ensureAdminUserExists();
         WebDriverManager.chromedriver().setup();
 
@@ -42,6 +43,27 @@ public abstract class BaseSeleniumTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    protected void waitForBackend() {
+        int retries = 30;
+        while (retries-- > 0) {
+            try {
+                URL url = new URL("http://localhost:8080/actuator/health");
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setConnectTimeout(2000);
+                con.setReadTimeout(2000);
+                if (con.getResponseCode() == 200) {
+                    return;
+                }
+            } catch (Exception ignored) {
+            }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ignored) {
+            }
+        }
+        throw new RuntimeException("Backend ayağa kalkmadı");
     }
 
     /**
